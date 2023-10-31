@@ -1,16 +1,29 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import CerrarBtn from'../img/cerrar.svg'
 import Mensaje from './Mensaje'
-export default function Modal({setModal,animarModal,setAnimarModal,guardarGasto}) {
+export default function Modal({setModal,animarModal,setAnimarModal,guardarGasto,gastoEditar,setGastoEditar}) {
     const [mensaje,setMensaje]=useState('')
 
     const [nombre,setNombre] = useState('')
     const [cantidad,setCantidad] =useState('')
     const [categoria,setCategoria] =useState('')
+    const [fecha,setFecha] =useState('')
+    const [id,setId] =useState('')
+
+
+    useEffect(()=>{
+        if(Object.keys(gastoEditar).length > 0){
+            setNombre(gastoEditar.nombre)
+            setCantidad(gastoEditar.cantidad)
+            setCategoria(gastoEditar.categoria)
+            setId(gastoEditar.id)
+            setFecha(gastoEditar.fecha)
+    }},[])
+
     const ocultarModal = ()=>{
         
         setAnimarModal(false)
-
+        setGastoEditar({})
         setTimeout(()=>{
         setModal(false)
         },500)
@@ -26,7 +39,7 @@ export default function Modal({setModal,animarModal,setAnimarModal,guardarGasto}
 
             return
         }
-        guardarGasto({nombre,cantidad,categoria})
+        guardarGasto({nombre,cantidad,categoria,id,fecha})
     }
 
 
@@ -46,7 +59,7 @@ export default function Modal({setModal,animarModal,setAnimarModal,guardarGasto}
     
     className={`formulario ${animarModal ? 'animar': 'cerrar'}`} >
         <legend>
-            Nuevo Gasto
+          { gastoEditar.nombre ? 'Editar Gasto': 'Nuevo Gasto' }
         </legend>
                 {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje> }
         <div className='campo'>
@@ -84,14 +97,12 @@ export default function Modal({setModal,animarModal,setAnimarModal,guardarGasto}
             <option value="ahorro">Ahorro</option>
             <option value="comida">Comida</option>
             <option value="gastos">Gastos Varios</option>
-            <option value="caprichos">Caprichos</option>
             <option value="salud">Salud</option>
-            <option value="caprichos">Caprichos</option>
             <option value="suscripciones">Suscripciones</option>
             </select>
             <input
             type='submit'
-            value='Añadir Gasto'
+            value={ gastoEditar.nombre ? 'Guardar Cambio': 'Añadir Gasto' }
             />
 
         </div>
