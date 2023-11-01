@@ -78,7 +78,7 @@ export default function Modal({setModal,animarModal,setAnimarModal,guardarGasto,
             <label htmlFor='cantidad'>Cantidad</label>
             <input 
             id='cantidad'
-            type='text'
+            type='number'
             placeholder='Añada la cantidad del gasto: ej.300 '
             value={cantidad}
             onChange={e => setCantidad(Number(e.target.value))}
